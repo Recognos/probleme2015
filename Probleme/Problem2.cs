@@ -10,7 +10,7 @@ namespace Probleme
     {
         public static void solve()
         {
-            Console.WriteLine("problema 1");
+            Console.WriteLine("Problem 2");
         }
     }
 }
