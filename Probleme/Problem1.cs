@@ -18,7 +18,7 @@ namespace Probleme
             Console.WriteLine("Problem 1");
 
             // Frequency vector of the search string
-            var frequencySearch = CalculateFrequencyArray(sSearch);
+            var frequencySearch = Utilities.CalculateFrequencyArray(sSearch);
 
             // Words that have common letters with the search string and their frequency vector
             var candidates = new Dictionary<string, int[]>();
@@ -36,7 +36,7 @@ namespace Probleme
 
                 while (line != null)
                 {
-                    var frequency = CalculateFrequencyArray(line);
+                    var frequency = Utilities.CalculateFrequencyArray(line);
 
                     for (var i = 0; i < frequency.Length; i++)
                         if (frequency[i] > 0)
@@ -75,7 +75,7 @@ namespace Probleme
                         continue;
 
                     var pair = new KeyValuePair<string, string>(pair1.Key, pair2.Key);
-                    var added = AddArrays(pair1.Value, pair2.Value);
+                    var added = Utilities.AddArrays(pair1.Value, pair2.Value);
 
                     if (Enumerable.SequenceEqual(frequencySearch, added))
                     {
@@ -83,51 +83,6 @@ namespace Probleme
                         Console.WriteLine(pair.Key + ' ' + pair.Value);
                     }
                 }
-        }
-
-        private static int[] AddArrays(int[] a, int[] b)
-        {
-            var ret = new int[Math.Max(a.Length, b.Length)];
-
-            Array.Clear(ret, 0, ret.Length);
-
-            for (var i = 0; i < ret.Length; i++)
-            {
-                if (i < a.Length)
-                    ret[i] += a[i];
-
-                if (i < b.Length)
-                    ret[i] += b[i];
-            }
-
-            return ret;
-        }
-
-        private static int[] CalculateFrequencyArray(string source)
-        {
-            // ret[ch] == instances of letter ch in source
-            var ret = new int['z' - 'a' + 1];
-
-            Array.Clear(ret, 0, ret.Length);
-
-            foreach (var ch in source.ToCharArray())
-                if (Char.IsLetter(ch))
-                    ret[Char.ToLower(ch) - 'a']++;
-
-            // Debugging code
-            var debug = false;
-
-            if (debug)
-            {
-                Console.Write(source + " -> ");
-
-                for (var i = 0; i < ret.Length; i++)
-                    if (ret[i] > 0)
-                        Console.Write((char)('a' + i));
-                Console.WriteLine();
-            }
-
-            return ret;
         }
     }
 }
