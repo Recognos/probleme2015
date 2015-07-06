@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Probleme
 {
-    class Program
+    class Problem5
     {
-        static void Main(string[] args)
+        public static void solve()
         {
-            Problem1.solve();
+            Console.WriteLine("problema 1");
         }
     }
 }
