@@ -22,13 +22,15 @@ namespace Probleme
 
             // Words that have common letters with the search string and their frequency vector
             var candidates = new Dictionary<string, int[]>();
-            GetCandidates(frequencySearch, candidates);
+            candidates = GetCandidates(sFilename, frequencySearch);
 
             FindAnagrams(frequencySearch, candidates);
         }
 
-        private static void GetCandidates(int[] frequencySearch, Dictionary<string, int[]> candidates)
+        private static Dictionary<string, int[]> GetCandidates(string sFilename, int[] frequencySearch)
         {
+            var candidates = new Dictionary<string, int[]>();
+
             try
             {
                 var srWordlist = new StreamReader(sFilename);
@@ -57,7 +59,7 @@ namespace Probleme
                 Console.WriteLine(ex.Message);
             }
 
-            Console.WriteLine("Candidates:" + candidates.Count);
+            return candidates;
         }
 
         private static void FindAnagrams(int[] frequencySearch, Dictionary<string, int[]> candidates)

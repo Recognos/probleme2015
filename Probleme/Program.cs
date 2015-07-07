@@ -12,7 +12,12 @@ namespace Probleme
         {
             Console.WriteLine("Select problem:");
 
-            var problem = int.Parse(Console.ReadLine());
+            var line = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(line))
+                return;
+
+            var problem = int.Parse(line);
 
             switch(problem)
             {
