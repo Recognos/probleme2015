@@ -53,6 +53,35 @@ namespace Probleme
             return ret;
         }
 
-        
+        public static int[,] LevenshteinDistanceMatrix(string a, string b)
+        {
+            var m = a.Length;
+            var n = b.Length;
+
+            var ret = new int[m + 1, n + 1];
+
+            Array.Clear(ret, 0, ret.Length);
+
+            for (var i = 1; i <= m; i++)
+                ret[i, 0] = i;
+
+            for (var j = 1; j <= n; j++)
+                ret[0, j] = j;
+
+            for (var j = 1; j <= n; j++)
+                for (var i = 1; i <= m; i++)
+                    if (a[i - 1] == b[j - 1])
+                        ret[i, j] = ret[i - 1, j - 1];      // no operation
+                    else
+                        ret[i, j] = Math.Min(
+                            ret[i - 1, j] + 1,              // deletion
+                            Math.Min(
+                                ret[i, j - 1] + 1,          // insertion
+                                ret[i - 1, j - 1] + 1));    // substitution
+
+            return ret;
+        }
+
+        public static 
     }
 }

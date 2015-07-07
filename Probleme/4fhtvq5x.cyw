@@ -1,0 +1,125 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Probleme
+{
+    public static class Utilities
+    {
+        public static int[] AddArrays(int[] a, int[] b)
+        {
+            var ret = new int[Math.Max(a.Length, b.Length)];
+
+            Array.Clear(ret, 0, ret.Length);
+
+            for (var i = 0; i < ret.Length; i++)
+            {
+                if (i < a.Length)
+                    ret[i] += a[i];
+
+                if (i < b.Length)
+                    ret[i] += b[i];
+            }
+
+            return ret;
+        }
+
+        public static int[] CalculateFrequencyArray(string source)
+        {
+            // ret[ch] == instances of letter ch in source
+            var ret = new int['z' - 'a' + 1];
+
+            Array.Clear(ret, 0, ret.Length);
+
+            foreach (var ch in source.ToCharArray())
+                if (Char.IsLetter(ch))
+                    ret[Char.ToLower(ch) - 'a']++;
+
+            // Debugging code
+            var debug = 0;
+
+            if (debug != 0)
+            {
+                Console.Write(source + " -> ");
+
+                for (var i = 0; i < ret.Length; i++)
+                    if (ret[i] > 0)
+                        Console.Write((char)('a' + i));
+                Console.WriteLine();
+            }
+
+            return ret;
+        }
+
+        public static int[,] LevenshteinDistanceMatrix(string a, string b)
+        {
+            var m = a.Length;
+            var n = b.Length;
+
+            var ret = new int[m + 1, n + 1];
+
+            Array.Clear(ret, 0, ret.Length);
+
+            for (var i = 1; i <= m; i++)
+                ret[i, 0] = i;
+
+            for (var j = 1; j <= n; j++)
+                ret[0, j] = j;
+
+            for (var j = 1; j <= n; j++)
+                for (var i = 1; i <= m; i++)
+                    if (a[i - 1] == b[j - 1])
+                        ret[i, j] = ret[i - 1, j - 1];      // no operation
+                    else
+                        ret[i, j] = Math.Min(
+                            ret[i - 1, j] + 1,              // deletion
+                            Math.Min(
+                                ret[i, j - 1] + 1,          // insertion
+                                ret[i - 1, j - 1] + 1));    // substitution
+
+            return ret;
+        }
+
+        public static void PrintLevenshteinPaths(string a, string b)
+        {
+            var matDistance = LevenshteinDistanceMatrix(a, b);
+            var rows = matDistance.GetLength(0);
+            var cols = matDistance.GetLength(1);
+
+            var x = cols - 1;
+            var y = rows - 1;
+            var path = "";
+
+            PrintMatrixPaths(matDistance, cols - 1, rows - 1, "");
+        }
+
+        private static void PrintMatrixPaths(int[,] mat, 
+                                             int x, int y, 
+                                             string path)
+        {
+            if(y == 0)
+            {
+                for (var i = x; i >= 0; i--)
+                    path += mat[y, i].ToString() + ' ';
+                Console.WriteLine(path);
+                return;
+            }
+
+            if(x == 0)
+            {
+                for (var i = y; i >= 0; i--)
+                    path += mat[i, x].ToString() + ' ';
+                Console.WriteLine(path);
+                return;
+            }
+
+            path += mat[y, x].ToString() + ' ';
+
+            PrintMatrixPaths(mat, x - 1, y - 1, path);
+            PrintMatrixPaths(mat, x - 1, y, path);
+            PrintMatrixPaths(mat, x, y - 1, path);
+        }
+    }
+}
